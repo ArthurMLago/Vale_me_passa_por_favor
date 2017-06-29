@@ -1,3 +1,5 @@
+#include <iostream>
+
 #include <opencv2/videoio.hpp>
 #include <opencv2/imgproc.hpp>
 #include <opencv2/core/types_c.h>
@@ -26,7 +28,7 @@ int main ( int argc, char** argv ){
 
 
 	// Para cada camada:
-	for (int i = 2; i <= 40; i++){
+	for (int i = 15; i <= 15; i++){
 		// Obter o nome do arquivo da imagem:
 		char filename[32];
 		sprintf(filename,"originais/Corte%03d.png",i);
@@ -75,7 +77,6 @@ int main ( int argc, char** argv ){
 		vector<vector<Point> > contours;
 		vector<Vec4i> hierarchy;
 
-		Mat countours;
 
 		findContours( CountourMask, contours, hierarchy, CV_RETR_TREE, CV_CHAIN_APPROX_SIMPLE, Point(0, 0) );
 
@@ -84,6 +85,17 @@ int main ( int argc, char** argv ){
 			Scalar color = Scalar( rng.uniform(0, 255), rng.uniform(0,255), rng.uniform(0,255) );
 			drawContours( drawing, contours, i, color, 2, 8, hierarchy, 0, Point() );
 		}
+		Scalar color2 = Scalar( rng.uniform(0, 255), rng.uniform(0,255), rng.uniform(0,255) );
+		circle(drawing, contours[0][0], 10, color2);
+
+		// for(int i= 0; i < contours.size(); i++)
+		// {
+		//     for(int j= 0; j < contours[i].size();j++) // run until j < contours[i].size();
+		//     {
+
+		//         cout << contours[i][j] << endl; //do whatever
+		//     }
+		// }
 
 
 
