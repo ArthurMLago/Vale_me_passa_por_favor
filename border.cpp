@@ -1,4 +1,4 @@
-#include <iostream>
+#include <stdlib.h>
 
 #include <opencv2/videoio.hpp>
 #include <opencv2/imgproc.hpp>
@@ -13,6 +13,8 @@
 using namespace std;
 using namespace cv;
 
+int sizes[41];
+
 
 RNG rng(12345);
 
@@ -25,10 +27,13 @@ int main ( int argc, char** argv ){
 	Mat Base;
 	cvtColor(BaseColor, Base, COLOR_BGR2GRAY);
 
+	int width = Base.cols;
+	int height = Base.rows;
 
 
+	printf("float vec[][200][3] = {");
 	// Para cada camada:
-	for (int i = 15; i <= 15; i++){
+	for (int i = 3; i <= 40; i++){
 		// Obter o nome do arquivo da imagem:
 		char filename[32];
 		sprintf(filename,"originais/Corte%03d.png",i);
@@ -85,17 +90,19 @@ int main ( int argc, char** argv ){
 			Scalar color = Scalar( rng.uniform(0, 255), rng.uniform(0,255), rng.uniform(0,255) );
 			drawContours( drawing, contours, i, color, 2, 8, hierarchy, 0, Point() );
 		}
-		Scalar color2 = Scalar( rng.uniform(0, 255), rng.uniform(0,255), rng.uniform(0,255) );
-		circle(drawing, contours[0][0], 10, color2);
 
-		// for(int i= 0; i < contours.size(); i++)
-		// {
-		//     for(int j= 0; j < contours[i].size();j++) // run until j < contours[i].size();
-		//     {
-
-		//         cout << contours[i][j] << endl; //do whatever
-		//     }
-		// }
+		printf("{", i);
+		for(int j= 0; j < contours.size(); j++)
+		{
+			sizes[i] = contours[0].size() / 4;
+		    for(int k= 0; k < contours[j].size() / 4;k++) // run until k < contours[j].size();
+		    {
+		    	printf("{%2.4f,%2.4f,%2.4f},\n", (contours[j][k * 4].x - width/2)/50.0, (contours[j][k * 4].y - height/2)/50.0, i * 0.22);
+				Scalar color2 = Scalar( rng.uniform(0, 255), rng.uniform(0,255), rng.uniform(0,255) );
+				circle(drawing, contours[j][k * 4], 10, color2);
+		    }
+		}
+		printf("},\n");
 
 
 
@@ -109,6 +116,12 @@ int main ( int argc, char** argv ){
 
 
 	}
+
+	printf("};\nint sizes[]={\n");
+	for (int i = 1; i <= 40; i++){
+		printf("%d,\n",sizes[i]);
+	}
+	printf("};\n");
 }
 
 Mat removeBackground(Mat Base, Mat Layer){
