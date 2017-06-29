@@ -19,7 +19,7 @@ Mat removeBackground(Mat Base, Mat Layer);
 /** @function main */
 int main ( int argc, char** argv ){
 	// Carregar imagem de base para subtrair nas seguintes:
-	Mat BaseColor = imread( "originais/Vídeo_Axial001.png" );
+	Mat BaseColor = imread( "originais/Corte001.png" );
 	Mat Base;
 	cvtColor(BaseColor, Base, COLOR_BGR2GRAY);
 
@@ -29,7 +29,7 @@ int main ( int argc, char** argv ){
 	for (int i = 2; i <= 40; i++){
 		// Obter o nome do arquivo da imagem:
 		char filename[32];
-		sprintf(filename,"originais/Vídeo_Axial%03d.png",i);
+		sprintf(filename,"originais/Corte%03d.png",i);
 		// Carregar a imagem da camada:
 		Mat Layer = imread(filename);
 		cvtColor(Layer, Layer, COLOR_BGR2GRAY);
